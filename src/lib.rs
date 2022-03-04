@@ -81,15 +81,19 @@
 //! ```
 
 extern crate simdeez;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub mod avx2;
 pub mod cellular;
 mod noise_helpers;
 pub mod scalar;
 mod shared;
 pub mod simplex;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub mod sse2;
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 pub mod sse41;
 
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_1d_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -104,6 +108,14 @@ macro_rules! get_1d_noise {
     };
 }
 
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_1d_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_1d_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_2d_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -118,6 +130,14 @@ macro_rules! get_2d_noise {
     };
 }
 
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_2d_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_2d_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_3d_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -132,6 +152,14 @@ macro_rules! get_3d_noise {
     };
 }
 
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_3d_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_3d_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_4d_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -145,6 +173,15 @@ macro_rules! get_4d_noise {
         }
     };
 }
+
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_4d_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_4d_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_1d_scaled_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -159,6 +196,14 @@ macro_rules! get_1d_scaled_noise {
     };
 }
 
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_1d_scaled_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_1d_scaled_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_2d_scaled_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -173,6 +218,14 @@ macro_rules! get_2d_scaled_noise {
     };
 }
 
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_2d_scaled_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_2d_scaled_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_3d_scaled_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -187,6 +240,14 @@ macro_rules! get_3d_scaled_noise {
     };
 }
 
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_3d_scaled_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_3d_scaled_noise($setting) }
+    };
+}
+
+#[cfg(any(target_arch = "x86", target_arch = "x86_64"))]
 macro_rules! get_4d_scaled_noise {
     ($setting:expr) => {
         if is_x86_feature_detected!("avx2") {
@@ -198,6 +259,13 @@ macro_rules! get_4d_scaled_noise {
         } else {
             unsafe { scalar::get_4d_scaled_noise($setting) }
         }
+    };
+}
+
+#[cfg(not(any(target_arch = "x86", target_arch = "x86_64")))]
+macro_rules! get_4d_scaled_noise {
+    ($setting:expr) => {
+        unsafe { scalar::get_4d_scaled_noise($setting) }
     };
 }
 
